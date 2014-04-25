@@ -62,7 +62,7 @@ type TaskEffort struct {
 }
 
 func (effort *TaskEffort) String() string {
-    return fmt.Sprintf("[%d] %s", effort.Id, time.Time(effort.Timestamp), effort.Effort)
+    return fmt.Sprintf("[%d] %s %s", effort.Id, time.Time(effort.Timestamp), time.Duration(effort.Effort))
 }
 
 func (effort *TaskEffort) UnmarshalJSON(bytes []byte) (error error) {
@@ -70,8 +70,8 @@ func (effort *TaskEffort) UnmarshalJSON(bytes []byte) (error error) {
 
     if error = json.Unmarshal(bytes, &temp); error == nil {
         effort.Id = uint32(temp[0].(float64));
-        effort.Timestamp = Time(time.Unix(temp[1].(int64), 0));
-        effort.Effort = Duration(time.Duration(temp[2].(float64) * 1000000000));
+        effort.Timestamp = Time(time.Unix(int64(temp[1].(float64)), 0));
+        effort.Effort = Duration(time.Duration(int64(temp[2].(float64)) * 1000000000));
     }
 
     return error;

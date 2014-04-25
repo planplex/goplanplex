@@ -64,8 +64,9 @@ func main() {
                     }
                     
                     if tasks, error := projects[index].Tasks(); error == nil {
-                        for _, tasks := range tasks {
-                            fmt.Println(tasks, "\n")
+                        for _, task := range tasks {
+                            task, _ := projects[index].Task(task.Id)
+                            fmt.Println(task, "\n")
                         }
                     }
                 }
