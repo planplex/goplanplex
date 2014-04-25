@@ -21,3 +21,15 @@ func (_time *Time) UnmarshalJSON(b []byte) error {
         return nil
     }
 }
+
+type Duration time.Duration
+
+func (_duration *Duration) UnmarshalJSON(bytes []byte) error {
+    if count, error := strconv.ParseInt(string(bytes), 0, 64); error != nil {
+        return error
+    } else {
+        *_duration = Duration(time.Duration(count * 1000000000))
+
+        return nil
+    }
+}

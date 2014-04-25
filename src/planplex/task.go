@@ -58,7 +58,7 @@ func (resource *TaskResource) UnmarshalJSON(bytes []byte) (error error) {
 type TaskEffort struct {
     Id uint32
     Timestamp Time
-    Effort time.Duration 
+    Effort Duration 
 }
 
 func (effort *TaskEffort) String() string {
@@ -71,7 +71,7 @@ func (effort *TaskEffort) UnmarshalJSON(bytes []byte) (error error) {
     if error = json.Unmarshal(bytes, &temp); error == nil {
         effort.Id = uint32(temp[0].(float64));
         effort.Timestamp = Time(time.Unix(temp[1].(int64), 0));
-        effort.Effort = time.Duration(temp[2].(float64));
+        effort.Effort = Duration(time.Duration(temp[2].(float64) * 1000000000));
     }
 
     return error;
@@ -84,15 +84,15 @@ type Task struct {
     
     PlannedStart Time `json:"planned_start"`
     PlannedEnd Time `json:"planned_end"`
-    PlannedDuration time.Duration `json:"planned_duration"`
+    PlannedDuration Duration `json:"planned_duration"`
 
     EstimatedStart Time `json:"estimated_start"`
     EstimatedEnd Time `json:"estimated_end"`
-    EstimatedDuration time.Duration `json:"estimated_duration"`
+    EstimatedDuration Duration `json:"estimated_duration"`
 
-    PlannedEffort time.Duration `json:"planned_effort"`
-    EstimatedEffort time.Duration `json:"estimated_effort"`
-    CurrentEffort time.Duration `json:"current_effort"`
+    PlannedEffort Duration `json:"planned_effort"`
+    EstimatedEffort Duration `json:"estimated_effort"`
+    CurrentEffort Duration `json:"current_effort"`
 
     EstimatedProgress float32 `json:"estimated_progress"`
     PlannedProgress float32 `json:"planned_progress"`
@@ -109,13 +109,13 @@ func (task *Task) String() string {
         "Closed: " + strconv.FormatBool(task.Closed),
         "Planned start: " + time.Time(task.PlannedStart).String(),
         "Planned end: " + time.Time(task.PlannedEnd).String(),
-        "Planned duration: " + task.PlannedDuration.String(),
+        "Planned duration: " + time.Duration(task.PlannedDuration).String(),
         "Estimated start: " + time.Time(task.EstimatedStart).String(),
         "Estimated end: " + time.Time(task.EstimatedEnd).String(),
-        "Estimated duration: " + task.EstimatedDuration.String(),
-        "Planned effort: " + task.PlannedEffort.String(),
-        "Estimated effort: " + task.EstimatedEffort.String(),
-        "Current effort: " + task.CurrentEffort.String(),
+        "Estimated duration: " + time.Duration(task.EstimatedDuration).String(),
+        "Planned effort: " + time.Duration(task.PlannedEffort).String(),
+        "Estimated effort: " + time.Duration(task.EstimatedEffort).String(),
+        "Current effort: " + time.Duration(task.CurrentEffort).String(),
         "Estimated progress: " + strconv.FormatFloat(float64(task.EstimatedProgress), 'f', 2, 64),
         "Planned progress: " + strconv.FormatFloat(float64(task.PlannedProgress), 'f', 2, 64),
     }

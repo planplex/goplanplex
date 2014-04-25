@@ -72,16 +72,16 @@ func (dates *ProjectSummaryDates) String() string {
 }
 
 type ProjectSummaryEffort struct {
-    Planned time.Duration
-    Estimated time.Duration
-    Current time.Duration
+    Planned Duration
+    Estimated Duration
+    Current Duration
 }
 
 func (effort *ProjectSummaryEffort) String() string {
     var fields = []string {
-        effort.Planned.String() + " (Planned)",
-        effort.Estimated.String() + " (Estimated)",
-        effort.Current.String() + " (Current)",
+        time.Duration(effort.Planned).String() + " (Planned)",
+        time.Duration(effort.Estimated).String() + " (Estimated)",
+        time.Duration(effort.Current).String() + " (Current)",
     }
     
     return strings.Join(fields, " ")
