@@ -100,6 +100,8 @@ type Task struct {
     OutgoingDependencies []TaskDependency `json:"outgoing_dependencies"`
     Resources []TaskResource `json:"resources"`
     Efforts []TaskEffort `json:"efforts"`
+
+    project *Project
 }
 
 func (task *Task) String() string {
@@ -150,6 +152,10 @@ func (project *Project) Tasks() (tasks []*Task, error error) {
             if error := json.NewDecoder(response.Body).Decode(&tasks); error != nil {
                 return nil, error
             } else {
+                for _, task := range tasks {
+                    task.project = project
+                }
+
                 return tasks, nil
             }
         }
@@ -168,6 +174,7 @@ func (project *Project) Task(id uint32) (task *Task, error error) {
             if error := json.NewDecoder(response.Body).Decode(&task); error != nil {
                 return nil, error
             } else {
+                task.project = project;
                 return task, nil
             }
         }
