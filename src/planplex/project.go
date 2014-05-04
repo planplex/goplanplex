@@ -41,7 +41,7 @@ func (project *Project) String() string {
 
 func (project *Project) Activate() error {
     data, _ := json.Marshal(map[string]string {
-        "identifier": project.session.Username + "/" + project.Name,
+        "identifier": project.Identifier,
     })
 
     if request, error := project.session.makeRequest("POST", "/api/session/project", bytes.NewReader(data)); error != nil {
