@@ -36,6 +36,7 @@ func main() {
                     fmt.Println("Project activation failed: " + error.Error())
                 } else {
                     var taskIndex uint32
+                    var message string
 
                     if tasks, error := projects[projectIndex].Tasks(); error == nil {
                         for _, task := range tasks {
@@ -51,6 +52,10 @@ func main() {
                             for _, message := range messages {
                                 fmt.Println(message)
                             }
+                            
+                            fmt.Printf("\n> ")
+                            fmt.Scanf("%s", &message)
+                            task.PostMessage(message)
                         }
                     }
                 }

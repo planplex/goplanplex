@@ -13,6 +13,7 @@ import(
     "time"
     "fmt"
     "sort"
+    "bytes"
 )
 
 type Message struct {
@@ -58,6 +59,23 @@ func (task *Task) Messages() (messages []*Message, error error) {
 
                 return messages, nil
             }
+        }
+    }
+}
+
+func (task *Task) PostMessage(message string) (error error) {
+    data, _ := json.Marshal(map[string]string { "message": message })
+    url := "/api/projects/" + task.project.Identifier + "/chats/" + strconv.FormatUint(uint64(task.Id), 10)
+    
+    if request, error := task.project.session.makeRequest("POST", url, bytes.NewReader(data)); error != nil {
+        return error
+    } else {
+        if response, error := task.project.session.client.Do(request); error != nil {
+            return error
+        } else if response.StatusCode != http.StatusOK {
+            return errors.New(response.Status)
+        } else {
+            return nil
         }
     }
 }
